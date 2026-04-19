@@ -120,11 +120,24 @@ const App = (() => {
   }
 
   /* ===== PIN MODAL ===== */
-  function showPinModal(onSuccess, message = 'Zadejte PIN trenéra pro potvrzení') {
+  function showPinModal(onSuccess, message = 'Potvrďte akci PINem') {
     let pin = '';
+    const settings = Storage.getSettings();
+    const trainers = Storage.getTrainers();
+
+    const options = [
+      `<option value="master">👑 Hlavní trenér (${settings.userName || 'Správce'})</option>`,
+      ...trainers.map(t => `<option value="${t.id}">👤 ${t.name}</option>`)
+    ].join('');
+
     const body = `
       <div class="pin-modal">
         <p class="pin-subtitle">${message}</p>
+        <div style="margin-bottom:16px;">
+          <select id="pin-trainer-select" class="form-select" style="width:100%;max-width:300px;margin:0 auto;display:block;">
+            ${options}
+          </select>
+        </div>
         <div class="pin-display">
           <span class="pin-dot" id="pd1"></span>
           <span class="pin-dot" id="pd2"></span>
@@ -167,9 +180,15 @@ const App = (() => {
         updateDisplay();
 
         if (pin.length === 4) {
-          const trainers = Storage.getTrainers();
-          const validPins = [settings.trainerPin, '0000' + settings.trainerPin];
-          trainers.forEach(t => { if (t.pin) validPins.push(t.pin); });
+          const selectedVal = document.getElementById('pin-trainer-select').value;
+          let validPins = [];
+          
+          if (selectedVal === 'master') {
+            validPins = [settings.trainerPin, '0000' + settings.trainerPin];
+          } else {
+            const t = trainers.find(tr => tr.id === selectedVal);
+            if (t && t.pin) validPins.push(t.pin);
+          }
 
           if (validPins.includes(pin)) {
             closeModal();
