@@ -5,7 +5,7 @@
 
 const PDFExport = (() => {
 
-  const PURPLE = [124, 58, 237];
+  const PASTEL_BLUE = [100, 149, 237];
   const DARK   = [15, 15, 30];
   const GRAY   = [100, 116, 139];
   const GREEN  = [34, 197, 94];
@@ -17,18 +17,18 @@ const PDFExport = (() => {
     const pageW = doc.internal.pageSize.getWidth();
 
     // Header background
-    doc.setFillColor(...PURPLE);
+    doc.setFillColor(...PASTEL_BLUE);
     doc.rect(0, 0, pageW, 38, 'F');
 
     // Title
-    doc.setFont('helvetica', 'bold');
+    doc.setFont('Roboto', 'bold');
     doc.setFontSize(18);
     doc.setTextColor(255, 255, 255);
     doc.text(title, 14, 16);
 
     // Subtitle
     doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
+    doc.setFont('Roboto', 'normal');
     doc.setTextColor(200, 180, 255);
     doc.text(subtitle, 14, 24);
 
@@ -80,7 +80,7 @@ const PDFExport = (() => {
     const pending   = filteredPayments.filter(p => p.status === 'pending').length;
     const currency  = filteredPayments[0]?.currency || settings.defaultCurrency;
 
-    _summaryBox(doc, `${total.toLocaleString('cs-CZ')} ${currency}`, 'Celková částka', 14, y, PURPLE);
+    _summaryBox(doc, `${total.toLocaleString('cs-CZ')} ${currency}`, 'Celková částka', 14, y, PASTEL_BLUE);
     _summaryBox(doc, String(confirmed), 'Potvrzeno', 80, y, [34, 197, 94]);
     _summaryBox(doc, String(pending),   'Čeká',      146, y, [245, 158, 11]);
     y += 22;
@@ -106,8 +106,8 @@ const PDFExport = (() => {
               p.status === 'confirmed' ? '✓ Potvrzeno' : '⏳ Čeká',
             ];
           }),
-        styles: { fontSize: 9, cellPadding: 3, lineColor: [230,230,240], lineWidth: 0.2 },
-        headStyles: { fillColor: PURPLE, textColor: 255, fontStyle: 'bold', fontSize: 9 },
+        styles: { fontSize: 8, font: 'Roboto', cellPadding: 4, lineColor: [230,230,240], lineWidth: 0.2 },
+        headStyles: { fillColor: PASTEL_BLUE, textColor: 255, fontStyle: 'bold', fontSize: 9 },
         columnStyles: {
           0: { cellWidth: 22 },
           4: { fontStyle: 'bold', halign: 'right' },
@@ -127,9 +127,9 @@ const PDFExport = (() => {
 
       // Total row
       const fY = doc.lastAutoTable.finalY + 6;
-      doc.setFillColor(...PURPLE);
+      doc.setFillColor(...PASTEL_BLUE);
       doc.rect(14, fY, pageW - 28, 10, 'F');
-      doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(255,255,255);
+      doc.setFontSize(11); doc.setFont('Roboto', 'bold'); doc.setTextColor(255,255,255);
       doc.text('CELKOVÁ SUMA:', 18, fY + 7);
       doc.text(`${total.toLocaleString('cs-CZ')} ${currency}`, pageW - 18, fY + 7, { align: 'right' });
     }
@@ -153,7 +153,7 @@ const PDFExport = (() => {
     let y = 46;
 
     // Status + notes
-    doc.setFontSize(10); doc.setFont('helvetica', 'normal'); doc.setTextColor(...GRAY);
+    doc.setFontSize(10); doc.setFont('Roboto', 'normal'); doc.setTextColor(...GRAY);
     if (session.notes) { doc.text(`📝 ${session.notes}`, 14, y); y += 7; }
 
     const playerIds = Object.keys(session.playerPlans || {});
@@ -168,10 +168,10 @@ const PDFExport = (() => {
 
       doc.setFillColor(245, 245, 255);
       doc.rect(14, y, pageW - 28, 9, 'F');
-      doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(...DARK);
+      doc.setFontSize(11); doc.setFont('Roboto', 'bold'); doc.setTextColor(...DARK);
       doc.text(`👤 ${player?.name || 'Sportovec'}`, 18, y + 6.2);
       if (plan?.notes) {
-        doc.setFontSize(8); doc.setFont('helvetica', 'italic'); doc.setTextColor(...GRAY);
+        doc.setFontSize(8); doc.setFont('Roboto', 'italic'); doc.setTextColor(...GRAY);
         doc.text(plan.notes, pageW - 16, y + 6.2, { align: 'right' });
       }
       y += 12;
@@ -195,8 +195,8 @@ const PDFExport = (() => {
           ex.notes || '',
           ex.completed ? '✓' : '○',
         ]),
-        styles: { fontSize: 8.5, cellPadding: 2.5, lineColor: [230,230,240], lineWidth: 0.15 },
-        headStyles: { fillColor: [90, 50, 170], textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
+        styles: { fontSize: 7.5, font: 'Roboto', cellPadding: 3.5, lineColor: [230,230,240], lineWidth: 0.15 },
+        headStyles: { fillColor: PASTEL_BLUE, textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
         bodyStyles: { textColor: DARK },
         alternateRowStyles: { fillColor: [250,249,255] },
         columnStyles: {
@@ -289,15 +289,15 @@ const PDFExport = (() => {
       const project = Storage.getProjectById(session.projectId);
 
       // Header block
-      doc.setFillColor(...PURPLE);
+      doc.setFillColor(...PASTEL_BLUE);
       doc.rect(0, 0, pageW, 38, 'F');
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(255, 255, 255);
+      doc.setFont('Roboto', 'bold'); doc.setFontSize(18); doc.setTextColor(255, 255, 255);
       doc.text(session.title, 14, 16);
-      doc.setFontSize(10); doc.setFont('helvetica', 'normal'); doc.setTextColor(200, 180, 255);
+      doc.setFontSize(10); doc.setFont('Roboto', 'normal'); doc.setTextColor(200, 180, 255);
       doc.text(`${project?.icon||''} ${project?.name||''}  ·  ${_fmtDate(session.date)}  ·  ${settings.userName}`, 14, 24);
       
       let y = 46;
-      doc.setFontSize(10); doc.setFont('helvetica', 'normal'); doc.setTextColor(...GRAY);
+      doc.setFontSize(10); doc.setFont('Roboto', 'normal'); doc.setTextColor(...GRAY);
       if (session.notes) { doc.text(`📝 ${session.notes}`, 14, y); y += 7; }
 
       const playerIds = Object.keys(session.playerPlans || {});
@@ -309,10 +309,10 @@ const PDFExport = (() => {
         if (y > 240) { doc.addPage(); y = 20; }
         doc.setFillColor(245, 245, 255);
         doc.rect(14, y, pageW - 28, 9, 'F');
-        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(...DARK);
+        doc.setFontSize(11); doc.setFont('Roboto', 'bold'); doc.setTextColor(...DARK);
         doc.text(`👤 ${player?.name || 'Sportovec'}`, 18, y + 6.2);
         if (plan?.notes) {
-          doc.setFontSize(8); doc.setFont('helvetica', 'italic'); doc.setTextColor(...GRAY);
+          doc.setFontSize(8); doc.setFont('Roboto', 'italic'); doc.setTextColor(...GRAY);
           doc.text(plan.notes, pageW - 16, y + 6.2, { align: 'right' });
         }
         y += 12;
@@ -333,8 +333,8 @@ const PDFExport = (() => {
             ex.restSeconds ? `${ex.restSeconds}s` : '—',
             ex.notes || '', ex.completed ? '✓' : '○',
           ]),
-          styles: { fontSize: 8.5, cellPadding: 2.5, lineColor: [230,230,240], lineWidth: 0.15 },
-          headStyles: { fillColor: [90, 50, 170], textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
+          styles: { fontSize: 7.5, font: 'Roboto', cellPadding: 3.5, lineColor: [230,230,240], lineWidth: 0.15 },
+          headStyles: { fillColor: PASTEL_BLUE, textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
           bodyStyles: { textColor: DARK },
           alternateRowStyles: { fillColor: [250,249,255] },
           columnStyles: {
@@ -367,9 +367,9 @@ const PDFExport = (() => {
     doc.setFillColor(color[0], color[1], color[2]);
     doc.setFillColor(...color.map(c => Math.min(255, c + 180)));
     doc.rect(x, y, 58, 16, 'F');
-    doc.setFontSize(13); doc.setFont('helvetica', 'bold'); doc.setTextColor(...color);
+    doc.setFontSize(13); doc.setFont('Roboto', 'bold'); doc.setTextColor(...color);
     doc.text(value, x + 4, y + 8.5);
-    doc.setFontSize(7.5); doc.setFont('helvetica', 'normal'); doc.setTextColor(...GRAY);
+    doc.setFontSize(7.5); doc.setFont('Roboto', 'normal'); doc.setTextColor(...GRAY);
     doc.text(label, x + 4, y + 13.5);
   }
 
