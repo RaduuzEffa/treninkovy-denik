@@ -386,6 +386,7 @@ const App = (() => {
       .sort((a, b) => a.date.localeCompare(b.date))
       .slice(0, 5);
     if (!upcoming.length) return '';
+    const nearestDate = upcoming[0].date;
     return `
       <div class="section">
         <div class="section-header">
@@ -394,8 +395,10 @@ const App = (() => {
         <div class="session-list">
           ${upcoming.map(s => {
             const proj = Storage.getProjectById(s.projectId);
+            const isNearest = s.date === nearestDate;
+            const glassClass = isNearest ? ' session-row-glass' : '';
             return `
-              <div class="session-row" onclick="App.navigate('#/session/${s.id}')">
+              <div class="session-row${glassClass}" onclick="App.navigate('#/session/${s.id}')">
                 <div class="session-row-left">
                   <div class="session-row-date">${fmtDate(s.date)}</div>
                   <div class="session-row-title">${s.title}</div>
