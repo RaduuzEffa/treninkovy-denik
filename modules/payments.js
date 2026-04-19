@@ -110,7 +110,7 @@ const Payments = (() => {
               <th>Akce</th>
             </tr></thead>
             <tbody>
-              ${filtered.sort((a,b) => a.date.localeCompare(b.date)).map(p => paymentRowHtml(p)).join('')}
+              ${filtered.sort((a,b) => b.date.localeCompare(a.date)).map(p => paymentRowHtml(p)).join('')}
             </tbody>
           </table>
         </div>

@@ -5,7 +5,7 @@
 
 const PDFExport = (() => {
 
-  const PASTEL_BLUE = [0, 147, 239];
+  const PASTEL_BLUE = [0, 94, 153];
   const DARK   = [15, 15, 30];
   const GRAY   = [100, 116, 139];
   const GREEN  = [34, 197, 94];
@@ -93,7 +93,7 @@ const PDFExport = (() => {
         startY: y,
         head: [['Datum', 'Projekt', 'Sportovec(i)', 'Poznámka', 'Částka', 'Status']],
         body: filteredPayments
-          .sort((a,b) => a.date.localeCompare(b.date))
+          .sort((a,b) => b.date.localeCompare(a.date))
           .map(p => {
             const proj = Storage.getProjectById(p.projectId);
             const players = (p.playerIds||[]).map(id => Storage.getPlayerById(id)?.name).filter(Boolean).join(', ');
@@ -273,7 +273,7 @@ const PDFExport = (() => {
       return;
     }
 
-    sessions.sort((a, b) => a.date.localeCompare(b.date));
+    sessions.sort((a, b) => b.date.localeCompare(a.date));
     App.closeModal();
     App.showToast(`Generuji PDF pro ${sessions.length} tréninků...`);
 
