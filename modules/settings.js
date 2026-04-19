@@ -164,17 +164,41 @@ const Settings = (() => {
   }
 
   /* ===== EXPORT / IMPORT ===== */
-  function exportJSON() {
+  async function exportJSON() {
     const json = Storage.exportAll();
+    const filename = `treninkovy_denik_zaloha_${new Date().toISOString().slice(0,10)}.json`;
+
+    if (window.showSaveFilePicker) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{
+            description: 'JSON Záloha DB',
+            accept: { 'application/json': ['.json'] }
+          }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(json);
+        await writable.close();
+        App.showToast('Záloha uložena ✓');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return; // User cancelled
+        console.error('File System Access API error, falling back', err);
+      }
+    }
+
+    // Fallback for Safari / older browsers
     const blob = new Blob([json], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href     = url;
-    a.download = `treninkovy_denik_zaloha_${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a); // Appending is required for Safari
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 2000); // Increased delay for Chrome/macOS compatibility
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
     App.showToast('Záloha uložena ✓');
   }
 
