@@ -223,8 +223,10 @@ img { display: block; max-width: 100%; }
   display: none;
   position: fixed; top: 0; left: 0; right: 0;
   height: var(--header-h);
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
+  background: rgba(0, 94, 153, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 94, 153, 0.2);
   box-shadow: var(--shadow-sm);
   align-items: center; justify-content: space-between;
   padding: 0 var(--s4);

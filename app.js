@@ -280,28 +280,28 @@ const App = (() => {
       </div>
 
       <div class="stats-grid">
-        <div class="stat-card">
+        <div class="stat-card" style="cursor:pointer" onclick="App.navigate('#/projects')">
           <div class="stat-icon" style="background:rgba(124,58,237,.15);color:#a78bfa"><i class="icon icon-list"></i></div>
           <div class="stat-info">
             <div class="stat-value">${projects.length}</div>
             <div class="stat-label">Projekty / sporty</div>
           </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" style="cursor:pointer" onclick="App.navigate(${todaySessions.length > 0 ? '`#/session/${todaySessions[0].id}`' : '`#/projects`'})">
           <div class="stat-icon" style="background:rgba(59,130,246,.15);color:#60a5fa"><i class="icon icon-calendar"></i></div>
           <div class="stat-info">
             <div class="stat-value">${todaySessions.length}</div>
             <div class="stat-label">Dnes na plánu</div>
           </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" style="cursor:pointer" onclick="Payments._setQuick('status','pending'); App.navigate('#/payments')">
           <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24"><i class="icon icon-copy"></i></div>
           <div class="stat-info">
             <div class="stat-value">${pendingPays.length}</div>
             <div class="stat-label">Čekající platby</div>
           </div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" style="cursor:pointer" onclick="Payments._setQuick('month','${thisMonth}'); App.navigate('#/payments')">
           <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#4ade80"><i class="icon icon-users"></i></div>
           <div class="stat-info">
             <div class="stat-value">${monthTotal.toLocaleString('cs-CZ')} ${monthCurrency}</div>
