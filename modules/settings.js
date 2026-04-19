@@ -174,8 +174,8 @@ const Settings = (() => {
     document.body.appendChild(a); // Appending is required for Safari
     a.click();
     document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 100); // Safari needs delay
-    App.showToast('Záloha stažena ✓');
+    setTimeout(() => URL.revokeObjectURL(url), 2000); // Increased delay for Chrome/macOS compatibility
+    App.showToast('Záloha uložena ✓');
   }
 
   function triggerImport() {
