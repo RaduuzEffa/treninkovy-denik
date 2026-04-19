@@ -91,7 +91,7 @@ const PDFExport = (() => {
     } else {
       doc.autoTable({
         startY: y,
-        head: [['Datum', 'Projekt', 'Bojovník(i)', 'Poznámka', 'Částka', 'Status']],
+        head: [['Datum', 'Projekt', 'Sportovec(i)', 'Poznámka', 'Částka', 'Status']],
         body: filteredPayments
           .sort((a,b) => b.date.localeCompare(a.date))
           .map(p => {
@@ -170,7 +170,7 @@ const PDFExport = (() => {
       doc.setFillColor(245, 245, 255);
       doc.rect(14, y, pageW - 28, 9, 'F');
       doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(...DARK);
-      doc.text(`👤 ${player?.name || 'Bojovník'}`, 18, y + 6.2);
+      doc.text(`👤 ${player?.name || 'Sportovec'}`, 18, y + 6.2);
       if (plan?.notes) {
         doc.setFontSize(8); doc.setFont('helvetica', 'italic'); doc.setTextColor(...GRAY);
         doc.text(plan.notes, pageW - 16, y + 6.2, { align: 'right' });
@@ -312,7 +312,7 @@ const PDFExport = (() => {
         doc.setFillColor(245, 245, 255);
         doc.rect(14, y, pageW - 28, 9, 'F');
         doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(...DARK);
-        doc.text(`👤 ${player?.name || 'Bojovník'}`, 18, y + 6.2);
+        doc.text(`👤 ${player?.name || 'Sportovec'}`, 18, y + 6.2);
         if (plan?.notes) {
           doc.setFontSize(8); doc.setFont('helvetica', 'italic'); doc.setTextColor(...GRAY);
           doc.text(plan.notes, pageW - 16, y + 6.2, { align: 'right' });

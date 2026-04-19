@@ -87,7 +87,7 @@ const Exercises = (() => {
   }
 
   function exerciseListHtml(sessionId, playerId, session) {
-    if (!playerId) return `<div class="empty-state"><p>Žádný bojovník</p></div>`;
+    if (!playerId) return `<div class="empty-state"><p>Žádný sportovec</p></div>`;
     const plan = session.playerPlans?.[playerId] || {};
     const exercises = plan.exercises || [];
     const player = Storage.getPlayerById(playerId);
@@ -118,7 +118,7 @@ const Exercises = (() => {
           ${exercises.length === 0 ? `
             <div class="empty-state" style="padding:20px">
               <div class="empty-icon" style="font-size:2rem">💪</div>
-              <p>Žádná cvičení pro tohoto bojovníka</p>
+              <p>Žádná cvičení pro tohoto sportovce</p>
             </div>` : `
             <div class="exercise-list" id="exercise-list-${playerId}">
               ${exercises.map(ex => exerciseItemHtml(sessionId, playerId, ex)).join('')}

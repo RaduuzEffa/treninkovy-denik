@@ -354,7 +354,7 @@ const App = (() => {
         </div>
         <div class="session-card-title">${s.title}</div>
         <div class="session-card-meta">
-          <span>👥 ${playerCount} bojovník${playerCount===1?'':'ů'}</span>
+          <span>👥 ${playerCount} sportovec${playerCount===1?'':'ů'}</span>
           ${s.notes ? `<span>📝 ${s.notes.slice(0,40)}</span>` : ''}
         </div>
       </div>`;
