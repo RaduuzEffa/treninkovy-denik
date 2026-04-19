@@ -171,8 +171,10 @@ const Settings = (() => {
     const a    = document.createElement('a');
     a.href     = url;
     a.download = `treninkovy_denik_zaloha_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); // Appending is required for Safari
     a.click();
-    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 100); // Safari needs delay
     App.showToast('Záloha stažena ✓');
   }
 

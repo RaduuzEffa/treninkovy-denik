@@ -15,6 +15,8 @@ const Sessions = (() => {
     selectedPlayerIds: [],
     playerPlans: {},  // { playerId: { exercises: [], notes: '' } }
     activeTab: null,
+    attachmentData: null,
+    attachmentName: null,
   };
 
   /* ===== RENDER PLANNER (new) ===== */
@@ -28,6 +30,7 @@ const Sessions = (() => {
       date: today, title: '', notes: '',
       selectedPlayerIds: (project.playerIds || []).slice(),
       playerPlans: {}, activeTab: (project.playerIds||[])[0] || null,
+      attachmentData: null, attachmentName: null,
     };
     // Init plans for all players
     (project.playerIds || []).forEach(id => {
@@ -52,6 +55,8 @@ const Sessions = (() => {
       selectedPlayerIds: Object.keys(session.playerPlans || {}),
       playerPlans: JSON.parse(JSON.stringify(session.playerPlans || {})),
       activeTab: Object.keys(session.playerPlans || {})[0] || null,
+      attachmentData: session.attachmentData || null,
+      attachmentName: session.attachmentName || null,
     };
 
     _renderPlannerUI(el, project);
@@ -81,9 +86,19 @@ const Sessions = (() => {
                 <input class="form-input" id="sess-title" placeholder="např. Silový trénink A" value="${_state.title}" oninput="Sessions._updateField('title',this.value)" />
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Poznámka k tréninku</label>
-              <input class="form-input" id="sess-notes" placeholder="Volitelná poznámka..." value="${_state.notes}" oninput="Sessions._updateField('notes',this.value)" />
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="flex:2">
+                <label class="form-label">Poznámka k tréninku</label>
+                <input class="form-input" id="sess-notes" placeholder="Volitelná poznámka..." value="${_state.notes}" oninput="Sessions._updateField('notes',this.value)" />
+              </div>
+              <div class="form-group" style="flex:1">
+                <label class="form-label"><i class="icon icon-link"></i> Příloha (PDF / Obrázek)</label>
+                <input type="file" class="form-input" id="sess-attachment" accept="image/*,.pdf" onchange="Sessions._handleAttachment(this)" style="padding: 6px 12px; font-size: 0.8rem; background: var(--bg-input)" />
+                <div id="sess-att-preview" style="margin-top:6px; font-size:0.8rem; color:var(--text-secondary)">
+                  ${_state.attachmentName ? `Připojeno: <strong>${_state.attachmentName}</strong> <button class="btn-icon-sm" style="margin-left:4px" onclick="Sessions._clearAttachment()" type="button"><i class="icon icon-trash"></i></button>` : 'Žádná příloha'}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -368,6 +383,8 @@ const Sessions = (() => {
     if (_state.selectedPlayerIds.length === 0) { App.showToast('Vyberte alespoň jednoho hráče', 'error'); return; }
 
     const notes = document.getElementById('sess-notes')?.value?.trim() || _state.notes;
+    const attachmentData = _state.attachmentData;
+    const attachmentName = _state.attachmentName;
 
     // Collect only selected players' plans
     const playerPlans = {};
@@ -376,20 +393,47 @@ const Sessions = (() => {
     });
 
     if (_state.sessionId) {
-      Storage.updateSession(_state.sessionId, { date, title, notes, playerPlans });
+      Storage.updateSession(_state.sessionId, { date, title, notes, playerPlans, attachmentData, attachmentName });
       App.showToast('Trénink uložen ✓');
       App.navigate(`#/session/${_state.sessionId}`);
     } else {
       const id = Storage.generateId();
-      Storage.addSession({ id, projectId: _state.projectId, date, title, notes, status: 'planned', playerPlans, createdAt: new Date().toISOString() });
+      Storage.addSession({ id, projectId: _state.projectId, date, title, notes, attachmentData, attachmentName, status: 'planned', playerPlans, createdAt: new Date().toISOString() });
       App.showToast('Trénink vytvořen ✓');
       App.navigate(`#/session/${id}`);
     }
   }
 
+  function _handleAttachment(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      App.showToast('Soubor je příliš velký (max 5 MB)', 'error');
+      input.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => {
+      _state.attachmentData = e.target.result;
+      _state.attachmentName = file.name;
+      const prev = document.getElementById('sess-att-preview');
+      if (prev) prev.innerHTML = `Připojeno: <strong>${file.name}</strong> <button class="btn-icon-sm" style="margin-left:4px" onclick="Sessions._clearAttachment()" type="button"><i class="icon icon-trash"></i></button>`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function _clearAttachment() {
+    _state.attachmentData = null;
+    _state.attachmentName = null;
+    const input = document.getElementById('sess-attachment');
+    if (input) input.value = '';
+    const prev = document.getElementById('sess-att-preview');
+    if (prev) prev.innerHTML = 'Žádná příloha';
+  }
+
   return {
     renderPlanner, renderEditSession,
-    _updateField, _updatePlayerNote, _updateExField,
+    _updateField, _updatePlayerNote, _updateExField, _handleAttachment, _clearAttachment,
     _togglePlayer, _switchTab,
     _addExercise, _removeExercise,
     _copyFromPlayer, _doCopy,

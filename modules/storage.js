@@ -6,6 +6,7 @@
 const Storage = (() => {
   const KEYS = {
     PROJECTS: 'td_projects',
+    TRAINERS: 'td_trainers',
     PLAYERS:  'td_players',
     SESSIONS: 'td_sessions',
     PAYMENTS: 'td_payments',
@@ -48,6 +49,26 @@ const Storage = (() => {
   function deleteProject(id) {
     saveProjects(getProjects().filter(p => p.id !== id));
     saveSessions(getSessions().filter(s => s.projectId !== id));
+  }
+
+  /* ---- Trainers ---- */
+  function getTrainers() { return _get(KEYS.TRAINERS); }
+  function saveTrainers(d) { _set(KEYS.TRAINERS, d); }
+  function getTrainerById(id) { return getTrainers().find(t => t.id === id) || null; }
+  function addTrainer(t) { const arr = getTrainers(); arr.push(t); saveTrainers(arr); return t; }
+  function updateTrainer(id, data) {
+    saveTrainers(getTrainers().map(t => t.id === id ? { ...t, ...data } : t));
+  }
+  function deleteTrainer(id) {
+    saveTrainers(getTrainers().filter(t => t.id !== id));
+    // Optional: remove trainer from associated projects
+    const projs = getProjects();
+    projs.forEach(p => {
+      if (p.trainerIds && p.trainerIds.includes(id)) {
+        p.trainerIds = p.trainerIds.filter(tid => tid !== id);
+        updateProject(p.id, p);
+      }
+    });
   }
 
   /* ---- Players ---- */
@@ -119,6 +140,7 @@ const Storage = (() => {
       version: 1,
       exportedAt: new Date().toISOString(),
       projects: getProjects(),
+      trainers: getTrainers(),
       players:  getPlayers(),
       sessions: getSessions(),
       payments: getPayments(),
@@ -128,6 +150,7 @@ const Storage = (() => {
   function importAll(jsonStr) {
     const data = JSON.parse(jsonStr);
     if (data.projects) saveProjects(data.projects);
+    if (data.trainers) saveTrainers(data.trainers);
     if (data.players)  savePlayers(data.players);
     if (data.sessions) saveSessions(data.sessions);
     if (data.payments) savePayments(data.payments);
@@ -138,6 +161,7 @@ const Storage = (() => {
     KEYS, generateId,
     getSettings, saveSettings, defaultSettings,
     getProjects, saveProjects, getProjectById, addProject, updateProject, deleteProject,
+    getTrainers, saveTrainers, getTrainerById, addTrainer, updateTrainer, deleteTrainer,
     getPlayers, savePlayers, getPlayerById, getPlayersByProject,
     addPlayer, updatePlayer, deletePlayer, addPlayerToProject, removePlayerFromProject,
     getSessions, saveSessions, getSessionById, getSessionsByProject,

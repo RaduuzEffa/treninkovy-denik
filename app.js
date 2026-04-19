@@ -41,6 +41,7 @@ const App = (() => {
       sessionView:   hash.match(/^#\/session\/([^/]+)$/),
       sessionEdit:   hash.match(/^#\/session\/([^/]+)\/edit$/),
       playerEdit:    hash.match(/^#\/player\/([^/]+)\/edit$/),
+      trainerEdit:   hash.match(/^#\/trainer\/([^/]+)\/edit$/),
     };
 
     if      (m.sessionNew)    Sessions.renderPlanner(wrap, m.sessionNew[1]);
@@ -49,8 +50,10 @@ const App = (() => {
     else if (m.projectNew)    Projects.renderForm(wrap, null);
     else if (m.projectDetail) Projects.renderDetail(wrap, m.projectDetail[1]);
     else if (m.playerEdit)    Players.renderEditForm(wrap, m.playerEdit[1]);
+    else if (m.trainerEdit)   Trainers.renderForm(wrap, m.trainerEdit[1]);
     else if (hash === '#/projects') Projects.renderList(wrap);
     else if (hash === '#/players')  Players.renderList(wrap);
+    else if (hash === '#/trainers') Trainers.renderList(wrap);
     else if (hash === '#/payments' || hash.startsWith('#/payments')) Payments.render(wrap);
     else if (hash === '#/settings') Settings.render(wrap);
     else renderDashboard(wrap);
@@ -61,6 +64,7 @@ const App = (() => {
       hash.startsWith('#/project') || hash.startsWith('#/session') ? '#/projects' :
       hash.startsWith('#/payments') ? '#/payments' :
       hash.startsWith('#/players')  ? '#/players'  :
+      hash.startsWith('#/trainers') ? '#/trainers' :
       hash.startsWith('#/settings') ? '#/settings' : '#/';
 
     document.querySelectorAll('[data-route]').forEach(el => {
@@ -171,6 +175,23 @@ const App = (() => {
         }
       });
     }, 60);
+  }
+
+  /* ===== ATTACHMENT MODAL ===== */
+  function showAttachmentModal(sessionId) {
+    const session = Storage.getSessionById(sessionId);
+    if (!session || !session.attachmentData) return;
+
+    if (session.attachmentData.startsWith('data:application/pdf')) {
+      const w = window.open();
+      if (w) w.document.write(`<iframe width="100%" height="100%" src="${session.attachmentData}"></iframe>`);
+      else showToast('Povolte vyskakovací okna pro zobrazení PDF', 'error');
+    } else {
+      showModal('Příloha: ' + (session.attachmentName || 'Obrázek'), 
+        `<div style="text-align:center"><img src="${session.attachmentData}" style="max-width:100%;max-height:65vh;object-fit:contain;border-radius:var(--radius-md)" /></div>`,
+        `<button class="btn btn-secondary" onclick="App.closeModal()">Zavřít</button>`
+      );
+    }
   }
 
   /* ===== TOAST ===== */
@@ -426,7 +447,7 @@ const App = (() => {
   return {
     init, navigate, handleRoute,
     toggleSidebar, closeSidebar,
-    showModal, closeModal, showConfirm, showPinModal,
+    showModal, closeModal, showConfirm, showPinModal, showAttachmentModal,
     _runPendingAction,
     showToast, updateSidebarUser, updatePendingBadge,
     statusLabel, fmtDate, fmtDateShort,

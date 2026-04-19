@@ -195,7 +195,7 @@ const Projects = (() => {
             <div style="flex:1;min-width:0">
               <div class="proj-section-title" style="margin-bottom:2px"><i class="icon icon-settings"></i> Nastavení projektu</div>
               <div class="proj-settings-meta">${
-                [project.location, project.coachName, project.monthlyFee ? project.monthlyFee+'\u00a0'+cfg.defaultCurrency : '']
+                [project.location, project.monthlyFee ? project.monthlyFee+'\u00a0'+cfg.defaultCurrency : '']
                   .filter(Boolean).join(' · ') || 'Klikněte pro nastavení'
               }</div>
             </div>
@@ -209,8 +209,14 @@ const Projects = (() => {
                   <input class="form-input" id="po-loc-${projectId}" placeholder="Fitness centrum, hřiště…" value="${project.location||''}" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Trenér / kontakt</label>
-                  <input class="form-input" id="po-coach-${projectId}" placeholder="Jméno nebo telefon…" value="${project.coachName||''}" />
+                  <label class="form-label">Přiřazení trenéři</label>
+                  <div class="day-picker" style="gap:4px" id="po-trainers-${projectId}">
+                    ${Storage.getTrainers().map(t => {
+                      const isSel = (project.trainerIds || []).includes(t.id);
+                      return `<div class="day-pill day-pill-sm${isSel?' selected':''}" data-id="${t.id}"
+                                   onclick="this.classList.toggle('selected')" style="width:auto;padding:0 10px">${t.name}</div>`;
+                    }).join('') || '<span class="text-sm text-muted">Žádní trenéři nezaloženi.</span>'}
+                  </div>
                 </div>
               </div>
               <div class="form-row">
@@ -262,7 +268,7 @@ const Projects = (() => {
   function _saveOptions(projectId) {
     const data = {
       location:   document.getElementById(`po-loc-${projectId}`)?.value?.trim()   || '',
-      coachName:  document.getElementById(`po-coach-${projectId}`)?.value?.trim() || '',
+      trainerIds: Array.from(document.querySelectorAll(`#po-trainers-${projectId} .day-pill.selected`)).map(el => el.getAttribute('data-id')),
       monthlyFee: Number(document.getElementById(`po-fee-${projectId}`)?.value)   || 0,
       capacity:   Number(document.getElementById(`po-cap-${projectId}`)?.value)   || 0,
       notes:      document.getElementById(`po-notes-${projectId}`)?.value?.trim() || '',

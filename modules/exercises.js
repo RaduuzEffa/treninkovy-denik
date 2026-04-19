@@ -37,6 +37,7 @@ const Exercises = (() => {
             ${session.notes ? `<p class="text-sm text-muted" style="margin-top:4px">${session.notes}</p>` : ''}
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${session.attachmentData ? `<button class="btn btn-secondary btn-sm" onclick="App.showAttachmentModal('${sessionId}')"><i class="icon icon-link"></i> Otevřít přílohu</button>` : ''}
             <button class="btn btn-ghost btn-sm" onclick="App.navigate('#/session/${sessionId}/edit')"><i class="icon icon-edit"></i> Upravit</button>
             <button class="btn btn-primary btn-sm" onclick="PDFExport.sessionPlan('${sessionId}')"><i class="icon icon-copy"></i> PDF</button>
           </div>
