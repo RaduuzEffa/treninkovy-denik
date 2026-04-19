@@ -116,7 +116,7 @@ const Storage = (() => {
   function getSessionsByProject(projectId) {
     return getSessions()
       .filter(s => s.projectId === projectId)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
   }
   function addSession(s)    { const arr = getSessions(); arr.push(s); saveSessions(arr); return s; }
   function updateSession(id, data) {

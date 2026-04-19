@@ -5,7 +5,7 @@
 
 const PDFExport = (() => {
 
-  const PASTEL_BLUE = [100, 149, 237];
+  const PASTEL_BLUE = [0, 147, 239];
   const DARK   = [15, 15, 30];
   const GRAY   = [100, 116, 139];
   const GREEN  = [34, 197, 94];
@@ -29,13 +29,13 @@ const PDFExport = (() => {
     // Subtitle
     doc.setFontSize(10);
     doc.setFont('Roboto', 'normal');
-    doc.setTextColor(200, 180, 255);
+    doc.setTextColor(180, 220, 255);
     doc.text(subtitle, 14, 24);
 
     // Generated at
     const now = new Date().toLocaleString('cs-CZ');
     doc.setFontSize(8);
-    doc.setTextColor(180, 160, 240);
+    doc.setTextColor(180, 220, 255);
     doc.text(`Vygenerováno: ${now}`, pageW - 14, 24, { align: 'right' });
 
     return { doc, pageW, y: 46 };
@@ -93,7 +93,7 @@ const PDFExport = (() => {
         startY: y,
         head: [['Datum', 'Projekt', 'Sportovec(i)', 'Poznámka', 'Částka', 'Status']],
         body: filteredPayments
-          .sort((a,b) => b.date.localeCompare(a.date))
+          .sort((a,b) => a.date.localeCompare(b.date))
           .map(p => {
             const proj = Storage.getProjectById(p.projectId);
             const players = (p.playerIds||[]).map(id => Storage.getPlayerById(id)?.name).filter(Boolean).join(', ');
@@ -114,7 +114,7 @@ const PDFExport = (() => {
           5: { halign: 'center' },
         },
         bodyStyles: { textColor: DARK },
-        alternateRowStyles: { fillColor: [248, 247, 255] },
+        alternateRowStyles: { fillColor: [245, 250, 255] },
         didParseCell: (data) => {
           if (data.section === 'body' && data.column.index === 5) {
             const val = data.cell.raw;
@@ -166,7 +166,7 @@ const PDFExport = (() => {
       // Player header
       if (y > 240) { doc.addPage(); y = 20; }
 
-      doc.setFillColor(245, 245, 255);
+      doc.setFillColor(240, 248, 255);
       doc.rect(14, y, pageW - 28, 9, 'F');
       doc.setFontSize(11); doc.setFont('Roboto', 'bold'); doc.setTextColor(...DARK);
       doc.text(`👤 ${player?.name || 'Sportovec'}`, 18, y + 6.2);
@@ -198,7 +198,7 @@ const PDFExport = (() => {
         styles: { fontSize: 7.5, font: 'Roboto', cellPadding: 3.5, lineColor: [230,230,240], lineWidth: 0.15 },
         headStyles: { fillColor: PASTEL_BLUE, textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
         bodyStyles: { textColor: DARK },
-        alternateRowStyles: { fillColor: [250,249,255] },
+        alternateRowStyles: { fillColor: [245, 250, 255] },
         columnStyles: {
           0: { cellWidth: 50 },
           1: { cellWidth: 16, halign: 'center' },
@@ -293,7 +293,7 @@ const PDFExport = (() => {
       doc.rect(0, 0, pageW, 38, 'F');
       doc.setFont('Roboto', 'bold'); doc.setFontSize(18); doc.setTextColor(255, 255, 255);
       doc.text(session.title, 14, 16);
-      doc.setFontSize(10); doc.setFont('Roboto', 'normal'); doc.setTextColor(200, 180, 255);
+      doc.setFontSize(10); doc.setFont('Roboto', 'normal'); doc.setTextColor(180, 220, 255);
       doc.text(`${project?.icon||''} ${project?.name||''}  ·  ${_fmtDate(session.date)}  ·  ${settings.userName}`, 14, 24);
       
       let y = 46;
@@ -307,7 +307,7 @@ const PDFExport = (() => {
         const exercises = plan?.exercises || [];
 
         if (y > 240) { doc.addPage(); y = 20; }
-        doc.setFillColor(245, 245, 255);
+        doc.setFillColor(240, 248, 255);
         doc.rect(14, y, pageW - 28, 9, 'F');
         doc.setFontSize(11); doc.setFont('Roboto', 'bold'); doc.setTextColor(...DARK);
         doc.text(`👤 ${player?.name || 'Sportovec'}`, 18, y + 6.2);
@@ -336,7 +336,7 @@ const PDFExport = (() => {
           styles: { fontSize: 7.5, font: 'Roboto', cellPadding: 3.5, lineColor: [230,230,240], lineWidth: 0.15 },
           headStyles: { fillColor: PASTEL_BLUE, textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
           bodyStyles: { textColor: DARK },
-          alternateRowStyles: { fillColor: [250,249,255] },
+          alternateRowStyles: { fillColor: [245, 250, 255] },
           columnStyles: {
             0: { cellWidth: 50 },
             1: { cellWidth: 16, halign: 'center' },
