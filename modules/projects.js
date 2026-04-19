@@ -174,11 +174,11 @@ const Projects = (() => {
           </div>
           <div class="proj-compact-col">
             <div class="proj-section-title" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s3)">
-              <span><i class="icon icon-users"></i> Hráči (${players.length}${project.capacity?' / '+project.capacity:''})</span>
+              <span><i class="icon icon-users"></i> Bojovníci (${players.length}${project.capacity?' / '+project.capacity:''})</span>
               <button class="btn btn-ghost btn-sm" onclick="Players.showAddToProjectModal('${projectId}')">+</button>
             </div>
             ${players.length === 0
-              ? `<button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${projectId}')">Přidat hráče</button>`
+              ? `<button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${projectId}')">Přidat bojovníka</button>`
               : `<div class="players-mini-row">
                    ${players.map(p => `
                      <div class="players-mini-chip" title="${p.name}" onclick="App.navigate('#/player/${p.id}/edit')">
@@ -347,7 +347,7 @@ const Projects = (() => {
                 <div class="table-wrap">
                   <table class="payment-table">
                     <thead><tr>
-                      <th>Datum</th><th>Dny</th><th>Hráč(i)</th><th>Částka</th><th>Status</th>
+                      <th>Datum</th><th>Dny</th><th>Bojovník(i)</th><th>Částka</th><th>Status</th>
                     </tr></thead>
                     <tbody>
                       ${payments.slice(0,8).map(p => {
@@ -371,14 +371,14 @@ const Projects = (() => {
         <div>
           <div class="section">
             <div class="section-header">
-              <h2 class="section-title"><i class="icon icon-users"></i> Hráči (${players.length})</h2>
+              <h2 class="section-title"><i class="icon icon-users"></i> Bojovníci (${players.length})</h2>
               <button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${projectId}')">+ Přidat</button>
             </div>
             ${players.length === 0 ? `
               <div class="empty-state" style="padding:24px">
                 <div class="empty-icon">👤</div>
-                <h3>Žádní hráči</h3>
-                <button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${projectId}')">Přidat hráče</button>
+                <h3>Žádní bojovníci</h3>
+                <button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${projectId}')">Přidat bojovníka</button>
               </div>` : `
               <div style="display:flex;flex-direction:column;gap:8px">
                 ${players.map(player => playerRowHtml(player, projectId)).join('')}
@@ -537,7 +537,7 @@ const Projects = (() => {
           <div class="dup-preview-icon"><i class="icon icon-copy"></i></div>
           <div>
             <div class="dup-preview-title">${s.title}</div>
-            <div class="dup-preview-meta">${App.fmtDateShort(s.date)} &nbsp;·&nbsp; <i class="icon icon-users"></i> ${Object.keys(s.playerPlans||{}).length} hráčů</div>
+            <div class="dup-preview-meta">${App.fmtDateShort(s.date)} &nbsp;·&nbsp; <i class="icon icon-users"></i> ${Object.keys(s.playerPlans||{}).length} bojovníků</div>
           </div>
         </div>
         <div class="form-group">
@@ -591,7 +591,7 @@ const Projects = (() => {
 
   function removePlayer(playerId, projectId) {
     Storage.removePlayerFromProject(playerId, projectId);
-    App.showToast('Hráč odebrán z projektu');
+    App.showToast('Bojovník odebrán z projektu');
     App.navigate(`#/project/${projectId}`);
   }
 

@@ -1,5 +1,5 @@
 /* =====================================================
-   players.js — Hráči CRUD + views
+   players.js — Bojovníci CRUD + views
    ===================================================== */
 'use strict';
 
@@ -15,18 +15,18 @@ const Players = (() => {
     el.innerHTML = `
       <div class="page-header">
         <div>
-          <h1 class="page-title"><i class="icon icon-users"></i> Hráči</h1>
+          <h1 class="page-title"><i class="icon icon-users"></i> Bojovníci</h1>
           <p class="page-subtitle">Správa všech sportovců</p>
         </div>
-        <button class="btn btn-primary" onclick="Players.showNewPlayerModal()">+ Nový hráč</button>
+        <button class="btn btn-primary" onclick="Players.showNewPlayerModal()">+ Nový bojovník</button>
       </div>
 
       ${players.length === 0 ? `
         <div class="empty-state">
           <div class="empty-icon">👤</div>
-          <h3>Žádní hráči</h3>
-          <p>Přidejte první hráče nebo sportovce</p>
-          <button class="btn btn-primary" onclick="Players.showNewPlayerModal()">Přidat hráče</button>
+          <h3>Žádní bojovníci</h3>
+          <p>Přidejte první bojovníka nebo sportovce</p>
+          <button class="btn btn-primary" onclick="Players.showNewPlayerModal()">Přidat bojovníka</button>
         </div>` : `
         <div class="players-grid">
           ${players.map(p => playerCardHtml(p, projects)).join('')}
@@ -52,19 +52,19 @@ const Players = (() => {
   /* ===== EDIT FORM ===== */
   function renderEditForm(el, playerId) {
     const player   = Storage.getPlayerById(playerId);
-    if (!player) { el.innerHTML = '<p>Hráč nenalezen</p>'; return; }
+    if (!player) { el.innerHTML = '<p>Bojovník nenalezen</p>'; return; }
     const projects = Storage.getProjects();
 
     el.innerHTML = `
       <button class="back-btn" onclick="history.back()">← Zpět</button>
       <div class="page-header">
-        <h1 class="page-title">Upravit hráče</h1>
+        <h1 class="page-title">Upravit bojovníka</h1>
       </div>
       <div class="card" style="max-width:560px">
         <div class="card-body">
           <form class="form" id="player-form">
             <div class="form-group">
-              <label class="form-label">Jméno hráče <span class="req">*</span></label>
+              <label class="form-label">Jméno bojovníka <span class="req">*</span></label>
               <input class="form-input" id="pf-name" value="${player.name}" required maxlength="60"/>
             </div>
             <div class="form-group">
@@ -81,7 +81,7 @@ const Players = (() => {
               <input class="form-input" id="pf-note" placeholder="Volitelná poznámka..." value="${player.note||''}" />
             </div>
             <div class="form-group">
-              <label class="form-label">Projekty hráče</label>
+              <label class="form-label">Projekty bojovníka</label>
               <div class="player-select-list">
                 ${projects.map(proj => {
                   const inProject = (player.projectIds || []).includes(proj.id);
@@ -114,7 +114,7 @@ const Players = (() => {
         name, color, note: document.getElementById('pf-note').value.trim(),
         initials: name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase(),
       });
-      App.showToast('Hráč upraven ✓');
+      App.showToast('Bojovník upraven ✓');
       history.back();
     });
   }
@@ -122,10 +122,10 @@ const Players = (() => {
   /* ===== ADD / NEW MODAL ===== */
   function showNewPlayerModal(preselectedProjectId = null) {
     const projects = Storage.getProjects();
-    App.showModal('Nový hráč',
+    App.showModal('Nový bojovník',
       `<form class="form" id="new-player-form" onsubmit="event.preventDefault()">
         <div class="form-group">
-          <label class="form-label">Jméno hráče <span class="req">*</span></label>
+          <label class="form-label">Jméno bojovníka <span class="req">*</span></label>
           <input class="form-input" id="np-name" placeholder="Jan Novák" required maxlength="60" autofocus />
         </div>
         <div class="form-group">
@@ -150,14 +150,14 @@ const Players = (() => {
         </div>
       </form>`,
       `<button class="btn btn-ghost" onclick="App.closeModal()">Zrušit</button>
-       <button class="btn btn-primary" onclick="Players._submitNewPlayer()">Vytvořit hráče</button>`
+       <button class="btn btn-primary" onclick="Players._submitNewPlayer()">Vytvořit bojovníka</button>`
     );
     setTimeout(() => document.getElementById('np-name')?.focus(), 80);
   }
 
   function _submitNewPlayer() {
     const name = document.getElementById('np-name')?.value?.trim();
-    if (!name) { App.showToast('Zadejte jméno hráče', 'error'); return; }
+    if (!name) { App.showToast('Zadejte jméno bojovníka', 'error'); return; }
     const color     = document.getElementById('np-color')?.value || PLAYER_COLORS[0];
     const projectId = document.getElementById('np-project')?.value;
     const note      = document.getElementById('np-note')?.value?.trim();
@@ -169,7 +169,7 @@ const Players = (() => {
       if (proj) Storage.updateProject(projectId, { playerIds: [...(proj.playerIds||[]), id] });
     }
     App.closeModal();
-    App.showToast(`Hráč ${name} přidán ✓`);
+    App.showToast(`Bojovník ${name} přidán ✓`);
     App.handleRoute();
   }
 
@@ -180,10 +180,10 @@ const Players = (() => {
     const existing = proj?.playerIds || [];
     const others   = players.filter(p => !existing.includes(p.id));
 
-    App.showModal('Přidat hráče do projektu',
+    App.showModal('Přidat bojovníka do projektu',
       `<div style="display:flex;flex-direction:column;gap:12px">
-        <p class="text-sm text-muted">Vyberte existujícího hráče nebo vytvořte nového:</p>
-        <button class="btn btn-primary btn-sm" onclick="App.closeModal();Players.showNewPlayerModal('${projectId}')">+ Vytvořit nového hráče</button>
+        <p class="text-sm text-muted">Vyberte existujícího bojovníka nebo vytvořte nového:</p>
+        <button class="btn btn-primary btn-sm" onclick="App.closeModal();Players.showNewPlayerModal('${projectId}')">+ Vytvořit nového bojovníka</button>
         ${others.length > 0 ? `
           <div class="divider-text">nebo přidat existujícího</div>
           <div class="player-select-list" id="add-player-list">
@@ -192,7 +192,7 @@ const Players = (() => {
                 <div class="avatar avatar-sm" style="background:${p.color}">${p.initials}</div>
                 <span style="font-size:.875rem;font-weight:500">${p.name}</span>
               </div>`).join('')}
-          </div>` : '<p class="text-sm text-muted">Všichni hráči jsou již v projektu.</p>'}
+          </div>` : '<p class="text-sm text-muted">Všichni bojovníci jsou již v projektu.</p>'}
       </div>`,
       `<button class="btn btn-ghost" onclick="App.closeModal()">Zavřít</button>`
     );
@@ -201,7 +201,7 @@ const Players = (() => {
   function _addExistingToProject(playerId, projectId) {
     Storage.addPlayerToProject(playerId, projectId);
     App.closeModal();
-    App.showToast('Hráč přidán do projektu ✓');
+    App.showToast('Bojovník přidán do projektu ✓');
     App.navigate(`#/project/${projectId}`);
   }
 
@@ -209,8 +209,8 @@ const Players = (() => {
   function confirmDelete(playerId) {
     const player = Storage.getPlayerById(playerId);
     App.showConfirm(
-      `Opravdu smazat hráče „${player?.name}"?`,
-      () => { Storage.deletePlayer(playerId); App.showToast('Hráč smazán'); App.handleRoute(); }
+      `Opravdu smazat bojovníka „${player?.name}"?`,
+      () => { Storage.deletePlayer(playerId); App.showToast('Bojovník smazán'); App.handleRoute(); }
     );
   }
 

@@ -126,7 +126,7 @@ const App = (() => {
     const trainers = Storage.getTrainers();
 
     const options = [
-      `<option value="master">👑 Hlavní trenér (${settings.userName || 'Správce'})</option>`,
+      `<option value="master">👑 ADMIN (${settings.userName || 'Správce'})</option>`,
       ...trainers.map(t => `<option value="${t.id}">👤 ${t.name}</option>`)
     ].join('');
 
@@ -354,7 +354,7 @@ const App = (() => {
         </div>
         <div class="session-card-title">${s.title}</div>
         <div class="session-card-meta">
-          <span>👥 ${playerCount} hráč${playerCount===1?'':'ů'}</span>
+          <span>👥 ${playerCount} bojovník${playerCount===1?'':'ů'}</span>
           ${s.notes ? `<span>📝 ${s.notes.slice(0,40)}</span>` : ''}
         </div>
       </div>`;

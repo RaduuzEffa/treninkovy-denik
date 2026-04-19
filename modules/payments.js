@@ -103,7 +103,7 @@ const Payments = (() => {
               <th>Datum platby</th>
               <th>Dny tréninků</th>
               <th>Projekt</th>
-              <th>Hráč(i)</th>
+              <th>Bojovník(i)</th>
               <th>Poznámka</th>
               <th>Částka</th>
               <th>Status</th>
@@ -291,7 +291,7 @@ const Payments = (() => {
 
         <!-- Players (shown when project selected) -->
         <div class="form-group" id="player-select-group" style="display:none">
-          <label class="form-label">Hráč(i)</label>
+          <label class="form-label">Bojovník(i)</label>
           <div id="np-players-list" class="player-select-list" style="max-height:140px;overflow-y:auto"></div>
         </div>
 

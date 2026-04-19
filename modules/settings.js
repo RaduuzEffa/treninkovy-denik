@@ -89,7 +89,7 @@ const Settings = (() => {
             <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#4ade80"><i class="icon icon-users"></i></div>
             <div class="stat-info">
               <div class="stat-value">${players.length}</div>
-              <div class="stat-label">Hráči</div>
+              <div class="stat-label">Bojovníci</div>
             </div>
           </div>
           <div class="stat-card">

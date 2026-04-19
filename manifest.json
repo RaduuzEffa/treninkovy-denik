@@ -1,7 +1,7 @@
 {
   "name": "Tréninkový deník",
   "short_name": "Deník",
-  "description": "Evidence plateb, plánování tréninků a správa hráčů",
+  "description": "Evidence plateb, plánování tréninků a správa bojovníků",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

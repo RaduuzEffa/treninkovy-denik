@@ -107,12 +107,12 @@ const Sessions = (() => {
       <!-- Player selection -->
       <div class="card" style="margin-bottom:24px">
         <div class="card-header">
-          <div class="card-title"><i class="icon icon-users"></i> Hráči tohoto tréninku</div>
-          <button class="btn btn-ghost btn-sm" onclick="Players.showNewPlayerModal('${project.id}')">+ Nový hráč</button>
+          <div class="card-title"><i class="icon icon-users"></i> Bojovníci tohoto tréninku</div>
+          <button class="btn btn-ghost btn-sm" onclick="Players.showNewPlayerModal('${project.id}')">+ Nový bojovník</button>
         </div>
         <div class="card-body">
           ${allPlayers.length === 0 ? `
-            <p class="text-sm text-muted">Žádní hráči v projektu. <button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${project.id}')">Přidat hráče</button></p>` : `
+            <p class="text-sm text-muted">Žádní bojovníci v projektu. <button class="btn btn-secondary btn-sm" onclick="Players.showAddToProjectModal('${project.id}')">Přidat bojovníka</button></p>` : `
             <div class="player-select-list" id="player-select-list">
               ${allPlayers.map(p => playerSelectHtml(p)).join('')}
             </div>`}
@@ -123,8 +123,8 @@ const Sessions = (() => {
       ${_state.selectedPlayerIds.length > 0 ? exercisePlannerHtml(allPlayers) : `
         <div class="empty-state" style="padding:32px">
           <div class="empty-icon">👆</div>
-          <h3>Vyberte hráče</h3>
-          <p>Označte hráče výše, pak jim přidejte individuální cvičení</p>
+          <h3>Vyberte bojovníka</h3>
+          <p>Označte bojovníka výše, pak jim přidejte individuální cvičení</p>
         </div>`}
 
       <!-- Save button -->
@@ -159,7 +159,7 @@ const Sessions = (() => {
     return `
       <div class="card">
         <div class="card-header">
-          <div class="card-title">💪 Plán cvičení per hráč</div>
+          <div class="card-title">💪 Plán cvičení per bojovník</div>
         </div>
         <div class="card-body">
           <!-- Player tabs -->
@@ -211,7 +211,7 @@ const Sessions = (() => {
         </div>`}
 
       <div class="form-group" style="margin-top:16px">
-        <label class="form-label">Poznámka pro hráče</label>
+        <label class="form-label">Poznámka pro bojovníka</label>
         <input class="form-input" placeholder="Individuální pokyny..." value="${plan.notes||''}"
           oninput="Sessions._updatePlayerNote('${playerId}',this.value)" />
       </div>`;
@@ -344,7 +344,7 @@ const Sessions = (() => {
       .map(id => Storage.getPlayerById(id))
       .filter(Boolean);
 
-    if (players.length === 0) { App.showToast('Žádný jiný hráč není vybrán', 'error'); return; }
+    if (players.length === 0) { App.showToast('Žádný jiný bojovník není vybrán', 'error'); return; }
 
     const opts = players.map(p => `
       <div class="player-select-item" onclick="Sessions._doCopy('${targetPlayerId}','${p.id}')">
@@ -353,8 +353,8 @@ const Sessions = (() => {
         <span class="text-xs text-muted">(${(_state.playerPlans[p.id]?.exercises||[]).length} cvičení)</span>
       </div>`).join('');
 
-    App.showModal('Kopírovat plán od hráče',
-      `<p class="text-sm text-muted" style="margin-bottom:12px">Vyberte hráče, od kterého zkopírovat cvičení:</p>
+    App.showModal('Kopírovat plán od bojovníka',
+      `<p class="text-sm text-muted" style="margin-bottom:12px">Vyberte bojovníka, od kterého zkopírovat cvičení:</p>
        <div class="player-select-list">${opts}</div>`,
       `<button class="btn btn-ghost" onclick="App.closeModal()">Zrušit</button>`
     );
@@ -380,7 +380,7 @@ const Sessions = (() => {
     const title = document.getElementById('sess-title')?.value?.trim() || _state.title;
     if (!date)  { App.showToast('Vyberte datum tréninku', 'error'); return; }
     if (!title) { App.showToast('Zadejte název tréninku', 'error'); return; }
-    if (_state.selectedPlayerIds.length === 0) { App.showToast('Vyberte alespoň jednoho hráče', 'error'); return; }
+    if (_state.selectedPlayerIds.length === 0) { App.showToast('Vyberte alespoň jednoho bojovníka', 'error'); return; }
 
     const notes = document.getElementById('sess-notes')?.value?.trim() || _state.notes;
     const attachmentData = _state.attachmentData;
