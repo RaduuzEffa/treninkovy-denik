@@ -12,13 +12,13 @@
   --bg-card:        #FFFFFF;
   --bg-card-hover:  #F5F8FF;
   --bg-input:       rgba(0,0,0,0.045);
-  --bg-input-focus: rgba(37,99,235,0.07);
+  --bg-input-focus: rgba(0,147,239,0.07);
 
-  /* Brand — matches logo gradient #2563EB → #8B3CF7 */
-  --accent:         #2563EB;
+  /* Brand — matches logo gradient #0093ef → #005e99 */
+  --accent:         #0093ef;
   --accent-light:   #7C3AEF;
-  --accent-glow:    rgba(37,99,235,0.22);
-  --accent-grad:    linear-gradient(135deg, #2563EB, #8B3CF7);
+  --accent-glow:    rgba(0,147,239,0.22);
+  --accent-grad:    linear-gradient(135deg, #0093ef, #005e99);
 
   --success:        #16a34a;
   --success-bg:     rgba(22,163,74,0.10);
@@ -26,8 +26,8 @@
   --warning-bg:     rgba(217,119,6,0.10);
   --danger:         #dc2626;
   --danger-bg:      rgba(220,38,38,0.10);
-  --info:           #2563eb;
-  --info-bg:        rgba(37,99,235,0.10);
+  --info:           #0093ef;
+  --info-bg:        rgba(0,147,239,0.10);
 
   --text-primary:   #0F172A;
   --text-secondary: #475569;
@@ -40,7 +40,7 @@
   --shadow-sm:   0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
   --shadow-md:   0 6px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
   --shadow-lg:   0 14px 40px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.03);
-  --shadow-glow: 0 0 28px rgba(37,99,235,0.18);
+  --shadow-glow: 0 0 28px rgba(0,147,239,0.18);
 
   --radius-xs:  4px;
   --radius-sm:  8px;
@@ -489,7 +489,7 @@ img { display: block; max-width: 100%; }
   flex-shrink: 0;
 }
 .player-tab:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-strong); }
-.player-tab.active { background: rgba(37,99,235,0.09); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.player-tab.active { background: rgba(0,147,239,0.09); border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .player-tab .tab-avatar {
   width: 22px; height: 22px;
   border-radius: var(--radius-full);
@@ -522,7 +522,7 @@ img { display: block; max-width: 100%; }
   transition: all var(--trans-normal);
   flex-shrink: 0;
 }
-.exercise-checkbox:hover { border-color: var(--accent); background: rgba(37,99,235,0.08); }
+.exercise-checkbox:hover { border-color: var(--accent); background: rgba(0,147,239,0.08); }
 .exercise-item.completed .exercise-checkbox {
   background: var(--success); border-color: var(--success); color: #fff;
 }
@@ -589,7 +589,7 @@ img { display: block; max-width: 100%; }
   transition: all var(--trans-fast);
 }
 .player-select-item:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
-.player-select-item.selected { border-color: var(--accent); background: rgba(37,99,235,0.07); }
+.player-select-item.selected { border-color: var(--accent); background: rgba(0,147,239,0.07); }
 .player-select-item input[type="checkbox"] { display: none; }
 .player-select-check {
   width: 20px; height: 20px;
@@ -720,7 +720,7 @@ img { display: block; max-width: 100%; }
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: var(--accent);
   background: var(--bg-input-focus);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+  box-shadow: 0 0 0 3px rgba(0,147,239,0.12);
 }
 .form-input::placeholder, .form-textarea::placeholder { color: var(--text-disabled); }
 .form-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394A3B8'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
@@ -758,7 +758,7 @@ img { display: block; max-width: 100%; }
   transition: all var(--trans-fast);
 }
 .icon-pill:hover { background: var(--bg-card-hover); border-color: var(--border-strong); }
-.icon-pill.selected { border-color: var(--accent); background: rgba(37,99,235,0.09); }
+.icon-pill.selected { border-color: var(--accent); background: rgba(0,147,239,0.09); }
 
 /* ===== STATUS BADGES ===== */
 .status-badge {
@@ -767,7 +767,7 @@ img { display: block; max-width: 100%; }
   font-size: .72rem; font-weight: 700; white-space: nowrap;
 }
 .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-.status-planned    { background: rgba(37,99,235,0.10);  color: #2563EB; }
+.status-planned    { background: rgba(0,147,239,0.10);  color: #0093ef; }
 .status-in_progress{ background: rgba(217,119,6,0.12);  color: #d97706; }
 .status-completed  { background: rgba(22,163,74,0.12);  color: #16a34a; }
 .status-pending    { background: rgba(217,119,6,0.12);  color: #d97706; }
@@ -851,7 +851,7 @@ img { display: block; max-width: 100%; }
   cursor: pointer; transition: all var(--trans-fast);
   display: flex; align-items: center; justify-content: center;
 }
-.pin-key:hover { background: rgba(37,99,235,0.08); border-color: var(--accent); color: var(--accent); }
+.pin-key:hover { background: rgba(0,147,239,0.08); border-color: var(--accent); color: var(--accent); }
 .pin-key:active { transform: scale(.93); }
 .pin-key-empty { opacity: 0; pointer-events: none; }
 .pin-error { color: var(--danger); font-size: .8rem; font-weight: 600; animation: shake .3s ease; }
@@ -1039,7 +1039,7 @@ img { display: block; max-width: 100%; }
   transition: all var(--trans-fast);
   user-select: none; flex-shrink: 0;
 }
-.day-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(37,99,235,0.08); transform: scale(1.1); }
+.day-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,147,239,0.08); transform: scale(1.1); }
 .day-pill.selected { background: var(--accent-grad); color: #fff; border-color: transparent; box-shadow: 0 2px 8px var(--accent-glow); }
 /* Smaller variant for filter bar */
 .day-pill-sm { width: 32px; height: 32px; font-size: .65rem; }
@@ -1050,7 +1050,7 @@ img { display: block; max-width: 100%; }
   width: 26px; height: 26px;
   border-radius: 50%;
   font-size: .62rem; font-weight: 700;
-  background: rgba(37,99,235,0.09); color: var(--accent);
+  background: rgba(0,147,239,0.09); color: var(--accent);
   flex-shrink: 0;
 }
 
@@ -1079,7 +1079,7 @@ img { display: block; max-width: 100%; }
 .project-list-item:last-child { border-bottom: none; }
 .project-list-item:hover { background: var(--bg-card-hover); }
 .project-list-item.active {
-  background: rgba(37,99,235,0.07);
+  background: rgba(0,147,239,0.07);
   border-left: 3px solid var(--accent);
 }
 .project-list-icon {
@@ -1098,7 +1098,7 @@ img { display: block; max-width: 100%; }
 .proj-options-header {
   display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
   padding: var(--s5) var(--s6);
-  background: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(139,60,247,0.04));
+  background: linear-gradient(135deg, rgba(0,147,239,0.04), rgba(0,94,153,0.04));
   border: 1px solid var(--border);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   flex-wrap: wrap;
@@ -1138,7 +1138,7 @@ img { display: block; max-width: 100%; }
   cursor: pointer; font-size: .75rem; color: var(--text-secondary); font-weight: 500;
   transition: all var(--trans-fast);
 }
-.players-mini-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(37,99,235,0.06); }
+.players-mini-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,147,239,0.06); }
 
 /* Responsive master-detail */
 @media (max-width: 1024px) {
@@ -1184,7 +1184,7 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
   transition: all var(--trans-fast);
 }
-.cal-nav-btn:hover { background: rgba(37,99,235,0.08); border-color: var(--accent); color: var(--accent); }
+.cal-nav-btn:hover { background: rgba(0,147,239,0.08); border-color: var(--accent); color: var(--accent); }
 .cal-month-label {
   font-family: var(--font-head);
   font-size: .9rem; font-weight: 700;
@@ -1218,7 +1218,7 @@ img { display: block; max-width: 100%; }
   min-width: 0;
 }
 .cal-cell:hover {
-  background: rgba(37,99,235,0.1);
+  background: rgba(0,147,239,0.1);
   color: var(--accent);
   transform: scale(1.12);
 }
@@ -1250,15 +1250,15 @@ img { display: block; max-width: 100%; }
 }
 .cal-date-chip {
   display: inline-flex; align-items: center; gap: 4px;
-  background: rgba(37,99,235,0.09);
-  border: 1px solid rgba(37,99,235,0.22);
+  background: rgba(0,147,239,0.09);
+  border: 1px solid rgba(0,147,239,0.22);
   color: var(--accent);
   border-radius: var(--radius-full);
   padding: 3px 8px 3px 10px;
   font-size: .72rem; font-weight: 600;
   transition: all var(--trans-fast);
 }
-.cal-date-chip:hover { background: rgba(37,99,235,0.16); }
+.cal-date-chip:hover { background: rgba(0,147,239,0.16); }
 .cal-date-chip button {
   background: none; border: none; padding: 0;
   cursor: pointer; color: inherit;
@@ -1271,7 +1271,7 @@ img { display: block; max-width: 100%; }
 /* Compact chips in table cell */
 .training-date-chip {
   display: inline-flex; align-items: center; justify-content: center;
-  background: rgba(37,99,235,0.08);
+  background: rgba(0,147,239,0.08);
   color: var(--accent);
   border-radius: var(--radius-sm);
   padding: 2px 6px;
@@ -1287,8 +1287,8 @@ img { display: block; max-width: 100%; }
 .dup-preview {
   display: flex; align-items: center; gap: var(--s4);
   padding: var(--s4) var(--s5);
-  background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(139,60,247,0.06));
-  border: 1.5px solid rgba(37,99,235,0.18);
+  background: linear-gradient(135deg, rgba(0,147,239,0.06), rgba(0,94,153,0.06));
+  border: 1.5px solid rgba(0,147,239,0.18);
   border-radius: var(--radius-lg);
   margin-bottom: var(--s2);
 }
@@ -1296,7 +1296,7 @@ img { display: block; max-width: 100%; }
   font-size: 2rem;
   width: 48px; height: 48px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(37,99,235,0.1);
+  background: rgba(0,147,239,0.1);
   border-radius: var(--radius-md);
   flex-shrink: 0;
 }
@@ -1369,4 +1369,4 @@ img { display: block; max-width: 100%; }
 }
 .days-today    { background: rgba(22,163,74,0.12);  color: #16a34a; }
 .days-tomorrow { background: rgba(217,119,6,0.12);  color: #d97706; }
-.days-week     { background: rgba(37,99,235,0.10);  color: var(--accent); }
+.days-week     { background: rgba(0,147,239,0.10);  color: var(--accent); }
