@@ -224,6 +224,146 @@ const PDFExport = (() => {
     if (window.App) App.showToast('PDF exportováno ✓');
   }
 
+  /* ===== BATCH SESSION EXPORT ===== */
+  function showSessionExportModal() {
+    const projects = Storage.getProjects();
+    const thisMonth = new Date().toISOString().slice(0, 7);
+
+    App.showModal('Hromadný export tréninků', `
+      <form id="batch-export-form" onsubmit="event.preventDefault(); PDFExport.batchSessionPlans()">
+        <div class="form-group">
+          <label class="form-label">Měsíc</label>
+          <input class="form-input" type="month" id="be-month" value="${thisMonth}" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nebo: Od data</label>
+          <input class="form-input" type="date" id="be-from" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nebo: Do data</label>
+          <input class="form-input" type="date" id="be-to" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Projekt (volitelné)</label>
+          <select class="form-select" id="be-project">
+            <option value="">-- Všechny projekty --</option>
+            ${projects.map(p => `<option value="${p.id}">${p.icon} ${p.name}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-actions" style="margin-top:20px">
+          <button type="button" class="btn btn-ghost" onclick="App.closeModal()">Zrušit</button>
+          <button type="submit" class="btn btn-primary"><i class="icon icon-copy"></i> Stáhnout hromadné PDF</button>
+        </div>
+      </form>
+    `);
+  }
+
+  function batchSessionPlans() {
+    const month = document.getElementById('be-month').value;
+    const dateFrom = document.getElementById('be-from').value;
+    const dateTo = document.getElementById('be-to').value;
+    const projectId = document.getElementById('be-project').value;
+
+    let sessions = Storage.getSessions();
+    if (projectId) sessions = sessions.filter(s => s.projectId === projectId);
+    if (month) sessions = sessions.filter(s => s.date.startsWith(month));
+    if (dateFrom) sessions = sessions.filter(s => s.date >= dateFrom);
+    if (dateTo) sessions = sessions.filter(s => s.date <= dateTo);
+
+    if (sessions.length === 0) {
+      App.showToast('Nenalezeny žádné tréninky pro tento filtr.', 'error');
+      return;
+    }
+
+    sessions.sort((a, b) => a.date.localeCompare(b.date));
+    App.closeModal();
+    App.showToast(`Generuji PDF pro ${sessions.length} tréninků...`);
+
+    const settings = Storage.getSettings();
+    let periodStr = month ? `Měsíc: ${month}` : (dateFrom || dateTo) ? `${dateFrom} - ${dateTo}` : 'Všechny tréninky';
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+
+    sessions.forEach((session, sIdx) => {
+      if (sIdx > 0) doc.addPage();
+      const project = Storage.getProjectById(session.projectId);
+
+      // Header block
+      doc.setFillColor(...PURPLE);
+      doc.rect(0, 0, pageW, 38, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(255, 255, 255);
+      doc.text(session.title, 14, 16);
+      doc.setFontSize(10); doc.setFont('helvetica', 'normal'); doc.setTextColor(200, 180, 255);
+      doc.text(`${project?.icon||''} ${project?.name||''}  ·  ${_fmtDate(session.date)}  ·  ${settings.userName}`, 14, 24);
+      
+      let y = 46;
+      doc.setFontSize(10); doc.setFont('helvetica', 'normal'); doc.setTextColor(...GRAY);
+      if (session.notes) { doc.text(`📝 ${session.notes}`, 14, y); y += 7; }
+
+      const playerIds = Object.keys(session.playerPlans || {});
+      playerIds.forEach((playerId) => {
+        const player = Storage.getPlayerById(playerId);
+        const plan   = session.playerPlans[playerId];
+        const exercises = plan?.exercises || [];
+
+        if (y > 240) { doc.addPage(); y = 20; }
+        doc.setFillColor(245, 245, 255);
+        doc.rect(14, y, pageW - 28, 9, 'F');
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(...DARK);
+        doc.text(`👤 ${player?.name || 'Hráč'}`, 18, y + 6.2);
+        if (plan?.notes) {
+          doc.setFontSize(8); doc.setFont('helvetica', 'italic'); doc.setTextColor(...GRAY);
+          doc.text(plan.notes, pageW - 16, y + 6.2, { align: 'right' });
+        }
+        y += 12;
+
+        if (exercises.length === 0) {
+          doc.setFontSize(9); doc.setTextColor(...GRAY);
+          doc.text('Žádná cvičení', 18, y);
+          y += 8;
+          return;
+        }
+
+        doc.autoTable({
+          startY: y,
+          head: [['Cvičení', 'Série', 'Opakování', 'Váha', 'Pauza', 'Poznámka', '✓']],
+          body: exercises.map(ex => [
+            ex.name || '—', ex.sets || '—', ex.reps || '—',
+            ex.weight ? `${ex.weight} ${ex.unit||'kg'}` : '—',
+            ex.restSeconds ? `${ex.restSeconds}s` : '—',
+            ex.notes || '', ex.completed ? '✓' : '○',
+          ]),
+          styles: { fontSize: 8.5, cellPadding: 2.5, lineColor: [230,230,240], lineWidth: 0.15 },
+          headStyles: { fillColor: [90, 50, 170], textColor: 255, fontStyle: 'bold', fontSize: 8.5 },
+          bodyStyles: { textColor: DARK },
+          alternateRowStyles: { fillColor: [250,249,255] },
+          columnStyles: {
+            0: { cellWidth: 50 },
+            1: { cellWidth: 16, halign: 'center' },
+            2: { cellWidth: 22, halign: 'center' },
+            3: { cellWidth: 22, halign: 'center' },
+            4: { cellWidth: 18, halign: 'center' },
+            6: { cellWidth: 12, halign: 'center', fontStyle: 'bold' },
+          },
+          didParseCell: (data) => {
+            if (data.section === 'body' && data.column.index === 6) {
+              data.cell.styles.textColor = data.cell.raw === '✓' ? GREEN : GRAY;
+            }
+          },
+          margin: { left: 14, right: 14 },
+        });
+
+        y = doc.lastAutoTable.finalY + 8;
+      });
+    });
+
+    _footer(doc);
+    doc.save(`treninky_hromadny_export_${new Date().toISOString().slice(0,10)}.pdf`);
+    App.showToast('Hromadný PDF export dokončen ✓');
+  }
+
   /* ===== HELPERS ===== */
   function _summaryBox(doc, value, label, x, y, color) {
     doc.setFillColor(...color, 0.12);
@@ -242,5 +382,5 @@ const PDFExport = (() => {
     return `${d}.${m}.${y}`;
   }
 
-  return { payments, sessionPlan };
+  return { payments, sessionPlan, showSessionExportModal, batchSessionPlans };
 })();

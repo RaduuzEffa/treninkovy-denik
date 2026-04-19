@@ -248,6 +248,7 @@ const App = (() => {
           <p class="page-subtitle">${fmtDate(today)}</p>
         </div>
         <div class="page-header-actions">
+          <button class="btn btn-ghost btn-sm" onclick="PDFExport.showSessionExportModal()"><i class="icon icon-copy"></i> Export tréninků (PDF)</button>
           <button class="btn btn-secondary btn-sm" onclick="App.navigate('#/payments')">+ Platba</button>
           <button class="btn btn-primary btn-sm" onclick="App.navigate('#/project/new')">+ Projekt</button>
         </div>
