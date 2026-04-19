@@ -41,6 +41,7 @@ const App = (() => {
       sessionView:   hash.match(/^#\/session\/([^/]+)$/),
       sessionEdit:   hash.match(/^#\/session\/([^/]+)\/edit$/),
       playerEdit:    hash.match(/^#\/player\/([^/]+)\/edit$/),
+      trainerNew:    hash.match(/^#\/trainer\/new$/),
       trainerEdit:   hash.match(/^#\/trainer\/([^/]+)\/edit$/),
     };
 
@@ -50,6 +51,7 @@ const App = (() => {
     else if (m.projectNew)    Projects.renderForm(wrap, null);
     else if (m.projectDetail) Projects.renderDetail(wrap, m.projectDetail[1]);
     else if (m.playerEdit)    Players.renderEditForm(wrap, m.playerEdit[1]);
+    else if (m.trainerNew)    Trainers.renderForm(wrap, null);
     else if (m.trainerEdit)   Trainers.renderForm(wrap, m.trainerEdit[1]);
     else if (hash === '#/projects') Projects.renderList(wrap);
     else if (hash === '#/players')  Players.renderList(wrap);
@@ -165,7 +167,11 @@ const App = (() => {
         updateDisplay();
 
         if (pin.length === 4) {
-          if (pin === settings.trainerPin) {
+          const trainers = Storage.getTrainers();
+          const validPins = [settings.trainerPin, '0000' + settings.trainerPin];
+          trainers.forEach(t => { if (t.pin) validPins.push(t.pin); });
+
+          if (validPins.includes(pin)) {
             closeModal();
             onSuccess();
           } else {

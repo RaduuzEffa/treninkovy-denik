@@ -16,7 +16,7 @@ const Trainers = (() => {
           <p class="page-subtitle">Správa lektorů pro přiřazení do projektů</p>
         </div>
         <div class="page-header-actions">
-          <button class="btn btn-primary" onclick="Trainers.renderForm(document.getElementById('main-content'), null)">+ Nový trenér</button>
+          <button class="btn btn-primary" onclick="App.navigate('#/trainer/new')">+ Nový trenér</button>
         </div>
       </div>
 
@@ -39,7 +39,7 @@ const Trainers = (() => {
               <tbody>
                 ${trainers.map(t => `
                   <tr style="border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s" 
-                      onclick="Trainers.renderForm(document.getElementById('main-content'), '${t.id}')">
+                      onclick="App.navigate('#/trainer/${t.id}/edit')">
                     <td style="padding:var(--s3) var(--s4);font-weight:500;">
                       <div style="display:flex;align-items:center;gap:8px">
                         <div style="width:32px;height:32px;background:var(--bg-input);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-weight:bold">
@@ -66,7 +66,7 @@ const Trainers = (() => {
   /* ===== VYKRESLENÍ FORMULÁŘE (Nový / Upravit) ====== */
   function renderForm(el, trainerId) {
     const isEdit = !!trainerId;
-    const t = isEdit ? Storage.getTrainerById(trainerId) : { name: '', phone: '', note: '' };
+    const t = isEdit ? Storage.getTrainerById(trainerId) : { name: '', phone: '', note: '', pin: '' };
 
     el.innerHTML = `
       <div class="page-header">
@@ -90,6 +90,11 @@ const Trainers = (() => {
             </div>
             
             <div class="form-group">
+              <label class="form-label">Tajný PIN trenéra (4 číslice pro potvrzování akcí)</label>
+              <input class="form-input" id="t-pin" type="password" inputmode="numeric" placeholder="••••" maxlength="4" pattern="[0-9]{4}" value="${t.pin||''}" />
+            </div>
+            
+            <div class="form-group">
               <label class="form-label">Poznámka / Specializace</label>
               <textarea class="form-input" id="t-note" rows="3" placeholder="Např. Specialista na kondiční trénink...">${t.note}</textarea>
             </div>
@@ -109,7 +114,8 @@ const Trainers = (() => {
       const payload = {
         name: document.getElementById('t-name').value.trim(),
         phone: document.getElementById('t-phone').value.trim(),
-        note: document.getElementById('t-note').value.trim()
+        note: document.getElementById('t-note').value.trim(),
+        pin: document.getElementById('t-pin').value.trim()
       };
 
       if (!payload.name) {
