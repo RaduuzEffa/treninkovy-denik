@@ -2,7 +2,7 @@
    Service Worker — Tréninkový deník (Offline-First PWA)
    ===================================================== */
 
-const CACHE_NAME = 'treninkovy-denik-v11';
+const CACHE_NAME = 'treninkovy-denik-v12';
 const ASSETS = [
   './',
   './index.html',
