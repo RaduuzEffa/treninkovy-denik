@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "exportedAt": "2026-04-19T09:11:58.364Z",
+  "projects": [
+    {
+      "id": "860eeae4-0b61-456f-b890-7829a45a099d",
+      "name": "Posilovna Radim",
+      "type": "gym",
+      "description": "Silový trénink",
+      "color": "#7c3aed",
+      "icon": "🏋️",
+      "createdAt": "2026-04-19T08:54:38.146Z",
+      "playerIds": []
+    },
+    {
+      "id": "580d5c8d-514e-4861-9053-acb239f4fb3f",
+      "name": "Latosa ESCRIMA",
+      "type": "martial_arts",
+      "description": "",
+      "icon": "🥊",
+      "color": "#dc2626",
+      "createdAt": "2026-04-19T09:07:53.603Z",
+      "playerIds": [
+        "a573bacd-8657-41c7-aade-18f2bb7cf543"
+      ],
+      "trainingDays": [
+        "Po"
+      ]
+    }
+  ],
+  "trainers": [
+    {
+      "name": "Pavel Srbecký",
+      "phone": "+420730806874",
+      "note": "",
+      "pin": "",
+      "id": "7a2c9943-7415-4299-b983-9fa1d82f99f6"
+    }
+  ],
+  "players": [
+    {
+      "id": "6b0f2598-f21f-4077-8bda-f4229c0faa60",
+      "name": "Hofíček",
+      "color": "#3b82f6",
+      "initials": "H",
+      "note": "",
+      "projectIds": []
+    },
+    {
+      "id": "39b0040c-4c53-43e6-bbbd-5d037eb4be1f",
+      "name": "Faďourek",
+      "color": "#22c55e",
+      "initials": "F",
+      "note": "",
+      "projectIds": []
+    },
+    {
+      "id": "a573bacd-8657-41c7-aade-18f2bb7cf543",
+      "name": "RadimP",
+      "color": "#ef4444",
+      "initials": "R",
+      "note": "",
+      "projectIds": [
+        "580d5c8d-514e-4861-9053-acb239f4fb3f"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "e968f7b6-9460-42e5-9e04-ce779e7f1e86",
+      "projectId": "860eeae4-0b61-456f-b890-7829a45a099d",
+      "date": "2026-04-19",
+      "title": "Silový trénink A — spodní partie",
+      "notes": "Zaměření na záda a nohy",
+      "status": "planned",
+      "playerPlans": {
+        "d00d0fbc-f6f1-426d-9426-540d9c4cf6d8": {
+          "exercises": [
+            {
+              "id": "f518e175-e6ab-4959-8188-60c344e60f1e",
+              "name": "Dřep",
+              "sets": 3,
+              "reps": 10,
+              "weight": 80,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            },
+            {
+              "id": "dfcb37f3-21c8-4dad-b626-00d0d7536bb8",
+              "name": "Mrtvý tah",
+              "sets": 4,
+              "reps": 8,
+              "weight": 100,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            },
+            {
+              "id": "7676f6c9-fafd-4b7d-a60d-3c7aef2035a6",
+              "name": "Leg press",
+              "sets": 3,
+              "reps": 12,
+              "weight": 120,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            }
+          ],
+          "notes": "",
+          "allCompleted": false
+        },
+        "72c8244a-62aa-4c5c-9596-90a3472ca9ba": {
+          "exercises": [
+            {
+              "id": "1950813a-da48-4060-b7f2-ea40ff3ece65",
+              "name": "Dřep",
+              "sets": 3,
+              "reps": 12,
+              "weight": 40,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "Technika, lehčí váha",
+              "completed": false
+            },
+            {
+              "id": "7acdb584-b414-4fe9-87ec-48a354470833",
+              "name": "Rumunský mrtvý tah",
+              "sets": 3,
+              "reps": 10,
+              "weight": 30,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            },
+            {
+              "id": "4fd7ab0d-d269-4956-89a8-23581d62a39f",
+              "name": "Výpad",
+              "sets": 3,
+              "reps": 10,
+              "weight": 20,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            }
+          ],
+          "notes": "",
+          "allCompleted": false
+        },
+        "021943be-84c9-4a21-879d-f4438c16e223": {
+          "exercises": [
+            {
+              "id": "80eff500-efc8-414f-bdbe-a0338a85b3d0",
+              "name": "Dřep",
+              "sets": 5,
+              "reps": 5,
+              "weight": 120,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "Těžká série",
+              "completed": false
+            },
+            {
+              "id": "0e44301c-edc6-494d-9143-98a14906a5df",
+              "name": "Mrtvý tah",
+              "sets": 4,
+              "reps": 6,
+              "weight": 140,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            }
+          ],
+          "notes": "Pokročilý program",
+          "allCompleted": false
+        }
+      },
+      "createdAt": "2026-04-19T08:54:38.146Z"
+    },
+    {
+      "id": "d1a5b199-3390-4522-8f62-8bf0a5981e52",
+      "projectId": "860eeae4-0b61-456f-b890-7829a45a099d",
+      "date": "2026-04-20",
+      "title": "Horní partie — push den",
+      "notes": "",
+      "status": "planned",
+      "playerPlans": {
+        "d00d0fbc-f6f1-426d-9426-540d9c4cf6d8": {
+          "exercises": [
+            {
+              "id": "b301eb05-384c-4a8d-b67f-8d0151fb20e8",
+              "name": "Bench press",
+              "sets": 4,
+              "reps": 10,
+              "weight": 70,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            },
+            {
+              "id": "f4e993f9-2188-48d4-90f0-be283188fb87",
+              "name": "Tlak s činkou",
+              "sets": 3,
+              "reps": 12,
+              "weight": 30,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            }
+          ],
+          "notes": "",
+          "allCompleted": false
+        },
+        "72c8244a-62aa-4c5c-9596-90a3472ca9ba": {
+          "exercises": [
+            {
+              "id": "8407cb37-d9db-4cb4-90c3-a1b581bb29ea",
+              "name": "Klik od stolu",
+              "sets": 3,
+              "reps": 15,
+              "weight": 0,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "Vlastní váha",
+              "completed": false
+            },
+            {
+              "id": "b2613460-5048-4cd7-9f94-ce2d1576fc7e",
+              "name": "Tlak na stroji",
+              "sets": 3,
+              "reps": 12,
+              "weight": 20,
+              "unit": "kg",
+              "restSeconds": 90,
+              "notes": "",
+              "completed": false
+            }
+          ],
+          "notes": "",
+          "allCompleted": false
+        }
+      },
+      "createdAt": "2026-04-19T08:54:38.146Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "4572a294-9523-47db-90a1-a4982ac7e11c",
+      "date": "2026-04-20",
+      "amount": 800,
+      "currency": "CZK",
+      "note": "",
+      "projectId": "580d5c8d-514e-4861-9053-acb239f4fb3f",
+      "playerIds": [],
+      "trainingDates": [
+        "2026-03-30",
+        "2026-04-13",
+        "2026-04-15",
+        "2026-04-20"
+      ],
+      "status": "pending",
+      "confirmationToken": "MZEX52",
+      "confirmedAt": null
+    }
+  ],
+  "settings": {
+    "trainerPin": "2235",
+    "defaultCurrency": "CZK",
+    "userName": "Radim"
+  }
+}

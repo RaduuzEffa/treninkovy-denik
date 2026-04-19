@@ -57,7 +57,7 @@ const PDFExport = (() => {
   }
 
   /* ===== PAYMENTS PDF ===== */
-  function payments() {
+  async function payments() {
     const filteredPayments = Payments.getFilteredPayments();
     const filters = Payments.getCurrentFilters();
     const settings = Storage.getSettings();
@@ -135,12 +135,11 @@ const PDFExport = (() => {
     }
 
     _footer(doc);
-    doc.save(`platby_${new Date().toISOString().slice(0,10)}.pdf`);
-    if (window.App) App.showToast('PDF exportováno ✓');
+    await _saveNative(doc, `platby_${new Date().toISOString().slice(0,10)}.pdf`);
   }
 
   /* ===== SESSION PLAN PDF ===== */
-  function sessionPlan(sessionId) {
+  async function sessionPlan(sessionId) {
     const session = Storage.getSessionById(sessionId);
     if (!session) { App.showToast('Trénink nenalezen', 'error'); return; }
     const project = Storage.getProjectById(session.projectId);
@@ -220,8 +219,7 @@ const PDFExport = (() => {
     });
 
     _footer(doc);
-    doc.save(`trenink_${session.date}_${session.title.replace(/\s+/g,'_').slice(0,20)}.pdf`);
-    if (window.App) App.showToast('PDF exportováno ✓');
+    await _saveNative(doc, `trenink_${session.date}_${session.title.replace(/\s+/g,'_').slice(0,20)}.pdf`);
   }
 
   /* ===== BATCH SESSION EXPORT ===== */
@@ -258,7 +256,7 @@ const PDFExport = (() => {
     `);
   }
 
-  function batchSessionPlans() {
+  async function batchSessionPlans() {
     const month = document.getElementById('be-month').value;
     const dateFrom = document.getElementById('be-from').value;
     const dateTo = document.getElementById('be-to').value;
@@ -360,8 +358,7 @@ const PDFExport = (() => {
     });
 
     _footer(doc);
-    doc.save(`treninky_hromadny_export_${new Date().toISOString().slice(0,10)}.pdf`);
-    App.showToast('Hromadný PDF export dokončen ✓');
+    await _saveNative(doc, `treninky_hromadny_export_${new Date().toISOString().slice(0,10)}.pdf`);
   }
 
   /* ===== HELPERS ===== */
@@ -380,6 +377,32 @@ const PDFExport = (() => {
     if (!isoDate) return '—';
     const [y, m, d] = isoDate.split('-');
     return `${d}.${m}.${y}`;
+  }
+
+  async function _saveNative(doc, filename) {
+    if (window.showSaveFilePicker) {
+      try {
+        const blob = doc.output('blob');
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{
+            description: 'PDF Dokument',
+            accept: { 'application/pdf': ['.pdf'] }
+          }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        if (window.App) App.showToast('PDF exportováno ✓');
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        console.error('FS API error', err);
+      }
+    }
+    // Fallback if FS API is unavailable or failed
+    doc.save(filename);
+    if (window.App) App.showToast('PDF exportováno ✓');
   }
 
   return { payments, sessionPlan, showSessionExportModal, batchSessionPlans };
