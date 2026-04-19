@@ -2,14 +2,14 @@
    Service Worker — Tréninkový deník (Offline-First PWA)
    ===================================================== */
 
-const CACHE_NAME = 'treninkovy-denik-v1';
+const CACHE_NAME = 'treninkovy-denik-v2';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
   './manifest.json',
-  './LOGORadim_New-zaoblene.jpeg',
+  './logo-new.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png',
