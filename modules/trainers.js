@@ -89,9 +89,15 @@ const Trainers = (() => {
               <input class="form-input" id="t-phone" value="${t.phone}" placeholder="+420 123 456 789" />
             </div>
             
-            <div class="form-group">
-              <label class="form-label">Tajný PIN trenéra (4 číslice pro potvrzování akcí)</label>
-              <input class="form-input" id="t-pin" type="password" inputmode="numeric" placeholder="••••" maxlength="4" pattern="[0-9]{4}" value="${t.pin||''}" />
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Tajný PIN trenéra (4 číslice)</label>
+                <input class="form-input" id="t-pin" type="password" inputmode="numeric" placeholder="••••" maxlength="4" pattern="[0-9]{4}" value="${t.pin||''}" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Potvrdit PIN</label>
+                <input class="form-input" id="t-pin2" type="password" inputmode="numeric" placeholder="••••" maxlength="4" pattern="[0-9]{4}" value="${t.pin||''}" />
+              </div>
             </div>
             
             <div class="form-group">
@@ -111,11 +117,19 @@ const Trainers = (() => {
     document.getElementById('trainer-form').addEventListener('submit', (e) => {
       e.preventDefault();
       
+      const pin = document.getElementById('t-pin').value.trim();
+      const pin2 = document.getElementById('t-pin2').value.trim();
+
+      if (pin !== pin2) {
+        App.showToast('Zadané PINy se neshodují.', 'error');
+        return;
+      }
+
       const payload = {
         name: document.getElementById('t-name').value.trim(),
         phone: document.getElementById('t-phone').value.trim(),
         note: document.getElementById('t-note').value.trim(),
-        pin: document.getElementById('t-pin').value.trim()
+        pin: pin
       };
 
       if (!payload.name) {

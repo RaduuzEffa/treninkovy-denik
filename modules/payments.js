@@ -103,7 +103,6 @@ const Payments = (() => {
               <th>Datum platby</th>
               <th>Dny tréninků</th>
               <th>Projekt</th>
-              <th>Sportovec(i)</th>
               <th>Poznámka</th>
               <th>Částka</th>
               <th>Status</th>
@@ -126,7 +125,6 @@ const Payments = (() => {
 
   function paymentRowHtml(p) {
     const proj    = Storage.getProjectById(p.projectId);
-    const players = (p.playerIds||[]).map(id => Storage.getPlayerById(id)?.name).filter(Boolean).join(', ');
     const dates   = (p.trainingDates || []).sort();
 
     let datesCell = '<span class="text-muted" style="font-size:.75rem">—</span>';
@@ -138,13 +136,12 @@ const Payments = (() => {
     }
 
     return `
-      <tr id="prow-${p.id}">
+      <tr id="prow-${p.id}" style="cursor:pointer" onclick="Payments.showPaymentDetailsModal('${p.id}')">
         <td style="white-space:nowrap">${App.fmtDateShort(p.date)}</td>
         <td>${datesCell}</td>
         <td>
-          ${proj ? `<span class="chip">${proj.icon} ${proj.name}</span>` : '<span class="text-muted">—</span>'}
+          ${proj ? `<span style="white-space:nowrap">${proj.icon} ${proj.name}</span>` : '<span class="text-muted">—</span>'}
         </td>
-        <td class="text-sm">${players || '—'}</td>
         <td class="text-sm text-muted">${p.note || '—'}</td>
         <td><span class="payment-amount">${Number(p.amount).toLocaleString('cs-CZ')} ${p.currency}</span></td>
         <td>
@@ -152,7 +149,7 @@ const Payments = (() => {
             ${p.status === 'confirmed' ? '✓ Potvrzeno' : '⏳ Čeká'}
           </span>
         </td>
-        <td>
+        <td onclick="event.stopPropagation()">
           <div class="action-row">
             ${p.status === 'pending' ? `
               <button class="btn-icon-sm" title="Potvrdit PIN" onclick="Payments.confirmWithPin('${p.id}')">🔐</button>` : `
@@ -364,6 +361,40 @@ const Payments = (() => {
   /* =====================================================
      ACTIONS
   ===================================================== */
+  function showPaymentDetailsModal(paymentId) {
+    const p = Storage.getPaymentById(paymentId);
+    if (!p) return;
+    
+    const proj = Storage.getProjectById(p.projectId);
+    const dates = (p.trainingDates || []).sort();
+    
+    let datesHtml = dates.length ? dates.map(d => {
+      const fmt = new Date(d+'T00:00:00').toLocaleDateString('cs-CZ',{day:'numeric',month:'long',year:'numeric'});
+      return `<li style="margin-bottom: 4px;">${fmt}</li>`;
+    }).join('') : '<li>Žádné konkrétní dny</li>';
+
+    let btnHtml = '';
+    if (p.status === 'pending') {
+      btnHtml = `<button class="btn btn-primary" onclick="App.closeModal(); Payments.confirmWithPin('${p.id}')">🔐 Potvrdit trenérem</button>`;
+    } else {
+      btnHtml = `<button class="btn btn-secondary" onclick="App.closeModal(); Payments.unreconfirm('${p.id}')">↺ Zrušit potvrzení</button>`;
+    }
+
+    App.showModal('Detail platby',
+      `<div style="margin-bottom: var(--s4); font-size: 0.95rem;">
+        <p style="margin-bottom: 8px;"><strong>Částka:</strong> <span class="payment-amount">${Number(p.amount).toLocaleString('cs-CZ')} ${p.currency}</span></p>
+        <p style="margin-bottom: 8px;"><strong>Projekt:</strong> ${proj ? proj.name : '—'}</p>
+        <p style="margin-bottom: 8px;"><strong>Poznámka:</strong> ${p.note || '—'}</p>
+        <p style="margin-top: var(--s4)"><strong>Zadané dny tréninků:</strong></p>
+        <ul style="margin-top: var(--s2); padding-left: var(--s4);">
+          ${datesHtml}
+        </ul>
+      </div>`,
+      `<button class="btn btn-ghost" onclick="App.closeModal()">Zavřít</button>
+       ${btnHtml}`
+    );
+  }
+
   function confirmWithPin(paymentId) {
     App.showPinModal(() => {
       Storage.updatePayment(paymentId, { status: 'confirmed', confirmedAt: new Date().toISOString() });
@@ -449,7 +480,7 @@ const Payments = (() => {
     render, showAddModal,
     _loadPlayersForProject, _submitAdd,
     _toggleDate, _calNav,
-    confirmWithPin, unreconfirm, confirmDelete,
+    showPaymentDetailsModal, confirmWithPin, unreconfirm, confirmDelete,
     _applyFilter, _resetFilters,
     _setQuick, _setQuickHalf, _setQuickYear,
     getFilteredPayments, getCurrentFilters,
